@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
@@ -29,9 +28,10 @@ public abstract class SpringBootFlywayMigrateITAbs {
     protected final File TARGET_MIGRATION_FILE = new File(TARGET_CLASSES + DB_MIGRATION);
 
     protected void deleteMigrationFile() {
-        if (migrationFileExists()) {
+        if (migrationFileExists())
             MIGRATION_FILE.delete();
-        }
+        if (TARGET_MIGRATION_FILE.exists())
+            TARGET_MIGRATION_FILE.delete();
     }
 
     public void generateTest() {
@@ -52,7 +52,15 @@ public abstract class SpringBootFlywayMigrateITAbs {
         assertTrue(tableExists());
     }
 
-    public boolean fails(int result){
+    public void validateTest() throws IOException {
+        assertFalse(fails(maven("validate")));
+        migrateTest();
+        assertFalse(fails(maven("validate")));
+        deleteMigrationFile();
+        assertTrue(fails(maven("validate")));
+    }
+
+    public boolean fails(int result) {
         return 0 != result;
     }
 
@@ -62,10 +70,6 @@ public abstract class SpringBootFlywayMigrateITAbs {
     protected boolean tableExists() {
         try {
             DatabaseMetaData metaData = jdbcTemplate.getDataSource().getConnection().getMetaData();
-            ResultSet rs = metaData.getTables(null, null, "%", null);
-            while (rs.next()) {
-                System.out.println(rs.getString(3));
-            }
             return metaData.getTables(null, null, SpringBootFlywayMigrateITAbs.tableName, new String[]{"TABLE"}).next();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,12 +114,13 @@ public abstract class SpringBootFlywayMigrateITAbs {
 
     public String getProfile() {
         String[] activeProfiles = env.getActiveProfiles();
-        if(activeProfiles.length > 0)
+        if (activeProfiles.length > 0)
             return "-Dprofile=" + activeProfiles[0];
         return "";
     }
 
     protected abstract void dropSchemaVersionTable();
+
     protected abstract void dropTestTable();
 
     protected void setup() {

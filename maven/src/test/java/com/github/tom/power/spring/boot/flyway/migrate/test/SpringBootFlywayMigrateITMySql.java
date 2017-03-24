@@ -1,7 +1,6 @@
 package com.github.tom.power.spring.boot.flyway.migrate.test;
 
 import java.io.IOException;
-import static junit.framework.TestCase.assertFalse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -45,7 +44,7 @@ public class SpringBootFlywayMigrateITMySql extends SpringBootFlywayMigrateITAbs
 
     @Test
     public void validateTest() throws IOException {
-        assertFalse(fails(maven("validate")));
+        super.validateTest();
     }
 
     protected void dropSchemaVersionTable() {
