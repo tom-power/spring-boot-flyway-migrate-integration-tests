@@ -14,12 +14,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles("h2")
-public class SpringBootFlywayMigrateITH2 extends SpringBootFlywayMigrateITAbs {
+@ActiveProfiles("h2-vendor")
+public class SpringBootFlywayMigrateITH2Vendor extends SpringBootFlywayMigrateITAbs {
 
     @BeforeClass
     public static void beforeClassSetup() {
         SpringBootFlywayMigrateITAbs.TABLE_NAME = "PERSON";
+        SpringBootFlywayMigrateITAbs.DB_MIGRATION_BASE = "db/migration/h2";
     }
 
     @Before

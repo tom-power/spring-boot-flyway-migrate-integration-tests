@@ -19,7 +19,7 @@ public class SpringBootFlywayMigrateITMySql extends SpringBootFlywayMigrateITAbs
 
     @BeforeClass
     public static void beforeClassSetup() {
-        SpringBootFlywayMigrateITAbs.tableName = "Person";
+        SpringBootFlywayMigrateITAbs.TABLE_NAME = "Person";
     }
 
     @Before
@@ -52,7 +52,7 @@ public class SpringBootFlywayMigrateITMySql extends SpringBootFlywayMigrateITAbs
     }
 
     protected void dropTestTable() {
-        jdbcTemplate.update("DROP TABLE IF EXISTS " + SpringBootFlywayMigrateITAbs.tableName);
+        jdbcTemplate.update("DROP TABLE IF EXISTS " + SpringBootFlywayMigrateITAbs.TABLE_NAME);
     }
 
 }

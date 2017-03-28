@@ -15,14 +15,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public abstract class SpringBootFlywayMigrateITAbs {
 
-    protected static String tableName;
+    protected static String TABLE_NAME;
+    protected static String DB_MIGRATION_BASE = "db/migration";
 
     protected static final int ERROR_STATUS = 1;
     protected static final int OK_STATUS = 0;
-    protected final String MAVEN_PLUGIN = "com.github.tom-power.spring-boot-flyway-migrate:maven-plugin:0.2";
+    protected final String MAVEN_PLUGIN = "com.github.tom-power.spring-boot-flyway-migrate:maven-plugin:0.2.1";
     protected final String ROOT_DIR = new File("").getAbsolutePath();
     protected String SRC_MAIN_RESOURCES = "src/main/resources/";
-    protected String DB_MIGRATION = "db/migration/V1__migration.sql";
+    protected String DB_MIGRATION_FILE = "V1__migration.sql";
+    protected String DB_MIGRATION = DB_MIGRATION_BASE + "/" + DB_MIGRATION_FILE;
     protected String TARGET_CLASSES = "target/classes/";
     protected final File MIGRATION_FILE = new File(SRC_MAIN_RESOURCES + DB_MIGRATION);
     protected final File TARGET_MIGRATION_FILE = new File(TARGET_CLASSES + DB_MIGRATION);
@@ -70,7 +72,7 @@ public abstract class SpringBootFlywayMigrateITAbs {
     protected boolean tableExists() {
         try {
             DatabaseMetaData metaData = jdbcTemplate.getDataSource().getConnection().getMetaData();
-            return metaData.getTables(null, null, SpringBootFlywayMigrateITAbs.tableName, new String[]{"TABLE"}).next();
+            return metaData.getTables(null, null, SpringBootFlywayMigrateITAbs.TABLE_NAME, new String[]{"TABLE"}).next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
