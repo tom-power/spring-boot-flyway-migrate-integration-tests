@@ -8,6 +8,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,7 +38,7 @@ public abstract class SpringBootFlywayMigrateITAbs {
 
     public void generateTest() {
         assertFalse(migrationFileExists());
-        assertFalse(fails(gradle("generate")));
+        assertFalse(fails(flywayGenerate()));
         assertTrue(migrationFileExists());
     }
 
@@ -46,19 +47,32 @@ public abstract class SpringBootFlywayMigrateITAbs {
     }
 
     public void migrateTest() throws IOException {
-        assertFalse(fails(gradle("generate")));
-//        FileUtils.copyFile(MIGRATION_FILE, TARGET_MIGRATION_FILE);
+        assertFalse(fails(flywayGenerate()));
+        FileUtils.copyFile(MIGRATION_FILE, TARGET_MIGRATION_FILE);
         assertFalse(tableExists());
-        assertFalse(fails(gradle("migrate")));
+        assertFalse(fails(flywayMigrate()));
         assertTrue(tableExists());
     }
 
     public void validateTest() throws IOException {
-        assertFalse(fails(gradle("validate")));
+        assertFalse(fails(flywayValidate()));
         migrateTest();
-        assertFalse(fails(gradle("validate")));
+        assertFalse(fails(flywayValidate()));
         deleteMigrationFile();
-        assertTrue(fails(gradle("validate")));
+        assertTrue(fails(flywayValidate()));
+    }
+
+
+    private int flywayGenerate() {
+        return gradle("flywayGenerate");
+    }
+
+    private int flywayMigrate() {
+        return gradle("flywayMigrate");
+    }
+
+    private int flywayValidate() {
+        return gradle("flywayValidate");
     }
 
     public boolean fails(int result) {
@@ -78,17 +92,12 @@ public abstract class SpringBootFlywayMigrateITAbs {
         return false;
     }
 
-
     protected int gradle(String goal) {
         try {
 
-            String command = "gradle tasks";
+            String command = "./gradlew " + goal + " --debug " + getProfile();
 
-//            String command = "gradle " +
-//                    "-f " + ROOT_DIR + "/pom.xml " +
-//                    GRADLE_PLUGIN + ":" + goal + " -X " + getProfile();
-
-            System.out.println("%> Executing command: '" + command + "'...");
+            System.out.println("Executing command: '" + command + "'...");
 
             Process p = Runtime.getRuntime().exec(command);
 
