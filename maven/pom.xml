@@ -75,7 +75,7 @@
             <plugin>
                 <groupId>com.github.tom-power.spring-boot-flyway-migrate</groupId>
                 <artifactId>maven-plugin</artifactId>
-                <version>0.2.1</version>
+                <version>0.2.2</version>
             </plugin>
         </plugins>
     </build>
