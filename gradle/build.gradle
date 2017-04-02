@@ -45,5 +45,5 @@ dependencies {
 }
 
 springBoot {
-    mainClass = "com.github.tom.power.spring.boot.flyway.migrate.test.SpringBootFlywayMigrateGradleTestApplication"
+    mainClass = "com.github.tompower.spring.boot.flyway.migrate.test.SpringBootFlywayMigrateGradleTestApplication"
 }
