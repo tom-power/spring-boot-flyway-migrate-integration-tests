@@ -16,11 +16,11 @@ import java.io.IOException;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("h2-flyway-locations")
-public class SpringBootFlywayMigrateITH2FlywayLocations extends SpringBootFlywayMigrateITAbs {
+public class SpringBootFlywayMigrateITH2FlywayLocations extends SpringBootFlywayMigrateITAbsGradle {
 
     @BeforeClass
     public static void beforeClassSetup() {
-        SpringBootFlywayMigrateITAbs.TABLE_NAME = "PERSON";
+        SpringBootFlywayMigrateITAbsGradle.TABLE_NAME = "PERSON";
     }
 
     @Before
@@ -57,7 +57,7 @@ public class SpringBootFlywayMigrateITH2FlywayLocations extends SpringBootFlyway
 
     protected void dropTestTable() {
         try {
-            jdbcTemplate.update("DROP TABLE " + SpringBootFlywayMigrateITAbs.TABLE_NAME);
+            jdbcTemplate.update("DROP TABLE " + SpringBootFlywayMigrateITAbsGradle.TABLE_NAME);
         } catch (Exception e) {
         }
     }

@@ -16,12 +16,12 @@ import java.io.IOException;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("h2-vendor")
-public class SpringBootFlywayMigrateITH2Vendor extends SpringBootFlywayMigrateITAbs {
+public class SpringBootFlywayMigrateITH2Vendor extends SpringBootFlywayMigrateITAbsGradle {
 
     @BeforeClass
     public static void beforeClassSetup() {
-        SpringBootFlywayMigrateITAbs.TABLE_NAME = "PERSON";
-        SpringBootFlywayMigrateITAbs.DB_MIGRATION_BASE = "db/migration/h2";
+        SpringBootFlywayMigrateITAbsGradle.TABLE_NAME = "PERSON";
+        SpringBootFlywayMigrateITAbsGradle.DB_MIGRATION_BASE = "db/migration/h2";
     }
 
     @Before
@@ -58,7 +58,7 @@ public class SpringBootFlywayMigrateITH2Vendor extends SpringBootFlywayMigrateIT
 
     protected void dropTestTable() {
         try {
-            jdbcTemplate.update("DROP TABLE " + SpringBootFlywayMigrateITAbs.TABLE_NAME);
+            jdbcTemplate.update("DROP TABLE " + SpringBootFlywayMigrateITAbsGradle.TABLE_NAME);
         } catch (Exception e) {
         }
     }

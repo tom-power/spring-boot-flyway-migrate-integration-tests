@@ -3,13 +3,11 @@ buildscript {
         mavenCentral()
         flatDir {
             dirs "../../spring-boot-flyway-migrate/gradle-plugin/target"
-//            dirs "../spring-boot-flyway-migrate/gradle-plugin/target", "../spring-boot-flyway-migrate/core/target"
         }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
         classpath("com.github.tom-power.spring-boot-flyway-migrate:gradle-plugin:0.2.2")
-//        classpath("com.github.tom-power.spring-boot-flyway-migrate:core:0.2")
     }
 }
 
@@ -27,6 +25,9 @@ repositories {
     mavenCentral()
 //    gradle { url "https://jitpack.io" }
     maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+    flatDir {
+        dirs "../core/target"
+    }
 }
 
 sourceCompatibility = 1.8
@@ -40,6 +41,7 @@ dependencies {
     testCompile group: 'com.h2database', name: 'h2', version:'1.4.193'
     testCompile group: 'mysql', name: 'mysql-connector-java', version:'5.1.41'
     testCompile group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
+    testCompile group: 'com.github.tom-power.spring-boot-flyway-migrate-integration-tests', name: 'core', version:'0.2.2-tests'
 }
 
 springBoot {

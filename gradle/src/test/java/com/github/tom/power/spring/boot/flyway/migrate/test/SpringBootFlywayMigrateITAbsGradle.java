@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
-public abstract class SpringBootFlywayMigrateITAbs {
+public abstract class SpringBootFlywayMigrateITAbsGradle extends SpringBootFlywayMigrateITAbs {
 
     protected static String TABLE_NAME;
     protected static String DB_MIGRATION_BASE = "db/migration";
@@ -84,7 +84,7 @@ public abstract class SpringBootFlywayMigrateITAbs {
     protected boolean tableExists() {
         try {
             DatabaseMetaData metaData = jdbcTemplate.getDataSource().getConnection().getMetaData();
-            return metaData.getTables(null, null, SpringBootFlywayMigrateITAbs.TABLE_NAME, new String[]{"TABLE"}).next();
+            return metaData.getTables(null, null, SpringBootFlywayMigrateITAbsGradle.TABLE_NAME, new String[]{"TABLE"}).next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
