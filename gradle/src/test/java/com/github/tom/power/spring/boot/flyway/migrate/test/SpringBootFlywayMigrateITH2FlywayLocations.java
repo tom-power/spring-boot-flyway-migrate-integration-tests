@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("h2-flyway-locations")
 public class SpringBootFlywayMigrateITH2FlywayLocations extends SpringBootFlywayMigrateITAbs {
 
@@ -51,13 +51,15 @@ public class SpringBootFlywayMigrateITH2FlywayLocations extends SpringBootFlyway
     protected void dropSchemaVersionTable() {
         try {
             jdbcTemplate.update("DROP TABLE \"schema_version\"");
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     protected void dropTestTable() {
         try {
             jdbcTemplate.update("DROP TABLE " + SpringBootFlywayMigrateITAbs.TABLE_NAME);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
 }

@@ -1,6 +1,5 @@
 package com.github.tom.power.spring.boot.flyway.migrate.test;
 
-import java.io.IOException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -11,9 +10,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("h2")
 public class SpringBootFlywayMigrateITH2 extends SpringBootFlywayMigrateITAbs {
 
@@ -50,13 +51,15 @@ public class SpringBootFlywayMigrateITH2 extends SpringBootFlywayMigrateITAbs {
     protected void dropSchemaVersionTable() {
         try {
             jdbcTemplate.update("DROP TABLE \"schema_version\"");
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     protected void dropTestTable() {
         try {
             jdbcTemplate.update("DROP TABLE " + SpringBootFlywayMigrateITAbs.TABLE_NAME);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
 }

@@ -1,17 +1,19 @@
 package com.github.tom.power.spring.boot.flyway.migrate.test;
 
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 public abstract class SpringBootFlywayMigrateITAbs {
 
@@ -20,7 +22,7 @@ public abstract class SpringBootFlywayMigrateITAbs {
 
     protected static final int ERROR_STATUS = 1;
     protected static final int OK_STATUS = 0;
-    protected final String MAVEN_PLUGIN = "com.github.tom-power.spring-boot-flyway-migrate:maven-plugin:0.2.1";
+    protected final String MAVEN_PLUGIN = "spring-boot-flyway-migrate";
     protected final String ROOT_DIR = new File("").getAbsolutePath();
     protected String SRC_MAIN_RESOURCES = "src/main/resources/";
     protected String DB_MIGRATION_FILE = "V1__migration.sql";
@@ -38,7 +40,7 @@ public abstract class SpringBootFlywayMigrateITAbs {
 
     public void generateTest() {
         assertFalse(migrationFileExists());
-        assertFalse(fails(maven("generate")));
+        assertFalse(fails(run("generate")));
         assertTrue(migrationFileExists());
     }
 
@@ -47,19 +49,19 @@ public abstract class SpringBootFlywayMigrateITAbs {
     }
 
     public void migrateTest() throws IOException {
-        assertFalse(fails(maven("generate")));
+        assertFalse(fails(run("generate")));
         FileUtils.copyFile(MIGRATION_FILE, TARGET_MIGRATION_FILE);
         assertFalse(tableExists());
-        assertFalse(fails(maven("migrate")));
+        assertFalse(fails(run("migrate")));
         assertTrue(tableExists());
     }
 
     public void validateTest() throws IOException {
-        assertFalse(fails(maven("validate")));
+        assertFalse(fails(run("validate")));
         migrateTest();
-        assertFalse(fails(maven("validate")));
+        assertFalse(fails(run("validate")));
         deleteMigrationFile();
-        assertTrue(fails(maven("validate")));
+        assertTrue(fails(run("validate")));
     }
 
     public boolean fails(int result) {
@@ -80,7 +82,17 @@ public abstract class SpringBootFlywayMigrateITAbs {
     }
 
 
-    protected int maven(String goal) {
+    @Autowired
+    Environment env;
+
+    public String getProfile() {
+        String[] activeProfiles = env.getActiveProfiles();
+        if (activeProfiles.length > 0)
+            return "-Dprofile=" + activeProfiles[0];
+        return "";
+    }
+
+    protected int run(String goal) {
         try {
 
             String command = "mvn " +
@@ -111,15 +123,6 @@ public abstract class SpringBootFlywayMigrateITAbs {
         return ERROR_STATUS;
     }
 
-    @Autowired
-    Environment env;
-
-    public String getProfile() {
-        String[] activeProfiles = env.getActiveProfiles();
-        if (activeProfiles.length > 0)
-            return "-Dprofile=" + activeProfiles[0];
-        return "";
-    }
 
     protected abstract void dropSchemaVersionTable();
 

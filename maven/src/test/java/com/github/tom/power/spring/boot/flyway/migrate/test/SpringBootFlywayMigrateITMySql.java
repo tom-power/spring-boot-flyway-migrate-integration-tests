@@ -15,11 +15,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("mysql")
-public class SpringBootFlywayMigrateITMySql extends SpringBootFlywayMigrateITAbs {
+public class SpringBootFlywayMigrateITMySql extends SpringBootFlywayMigrateITAbsMaven {
 
     @BeforeClass
     public static void beforeClassSetup() {
-        SpringBootFlywayMigrateITAbs.TABLE_NAME = "Person";
+        SpringBootFlywayMigrateITAbsMaven.TABLE_NAME = "Person";
     }
 
     @Before
@@ -52,7 +52,7 @@ public class SpringBootFlywayMigrateITMySql extends SpringBootFlywayMigrateITAbs
     }
 
     protected void dropTestTable() {
-        jdbcTemplate.update("DROP TABLE IF EXISTS " + SpringBootFlywayMigrateITAbs.TABLE_NAME);
+        jdbcTemplate.update("DROP TABLE IF EXISTS " + SpringBootFlywayMigrateITAbsMaven.TABLE_NAME);
     }
 
 }

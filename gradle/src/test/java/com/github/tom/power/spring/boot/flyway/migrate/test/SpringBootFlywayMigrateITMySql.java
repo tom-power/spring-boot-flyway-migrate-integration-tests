@@ -1,6 +1,5 @@
 package com.github.tom.power.spring.boot.flyway.migrate.test;
 
-import java.io.IOException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -10,10 +9,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import java.io.IOException;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("mysql")
 public class SpringBootFlywayMigrateITMySql extends SpringBootFlywayMigrateITAbs {
 

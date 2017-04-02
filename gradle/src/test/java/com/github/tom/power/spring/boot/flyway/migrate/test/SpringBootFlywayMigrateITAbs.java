@@ -1,17 +1,19 @@
 package com.github.tom.power.spring.boot.flyway.migrate.test;
 
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 public abstract class SpringBootFlywayMigrateITAbs {
 
@@ -20,8 +22,6 @@ public abstract class SpringBootFlywayMigrateITAbs {
 
     protected static final int ERROR_STATUS = 1;
     protected static final int OK_STATUS = 0;
-    protected final String GRADLE_PLUGIN = "com.github.tom-power.spring-boot-flyway-migrate:gradle-plugin:0.2.1";
-    protected final String ROOT_DIR = new File("").getAbsolutePath();
     protected String SRC_MAIN_RESOURCES = "src/main/resources/";
     protected String DB_MIGRATION_FILE = "V1__migration.sql";
     protected String DB_MIGRATION = DB_MIGRATION_BASE + "/" + DB_MIGRATION_FILE;
@@ -61,7 +61,6 @@ public abstract class SpringBootFlywayMigrateITAbs {
         deleteMigrationFile();
         assertTrue(fails(flywayValidate()));
     }
-
 
     private int flywayGenerate() {
         return gradle("flywayGenerate");

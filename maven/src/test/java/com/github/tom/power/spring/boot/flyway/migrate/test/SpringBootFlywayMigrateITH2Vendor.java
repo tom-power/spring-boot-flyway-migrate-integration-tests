@@ -15,12 +15,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("h2-vendor")
-public class SpringBootFlywayMigrateITH2Vendor extends SpringBootFlywayMigrateITAbs {
+public class SpringBootFlywayMigrateITH2Vendor extends SpringBootFlywayMigrateITAbsMaven {
 
     @BeforeClass
     public static void beforeClassSetup() {
-        SpringBootFlywayMigrateITAbs.TABLE_NAME = "PERSON";
-        SpringBootFlywayMigrateITAbs.DB_MIGRATION_BASE = "db/migration/h2";
+        SpringBootFlywayMigrateITAbsMaven.TABLE_NAME = "PERSON";
+        SpringBootFlywayMigrateITAbsMaven.DB_MIGRATION_BASE = "db/migration/h2";
     }
 
     @Before
@@ -56,7 +56,7 @@ public class SpringBootFlywayMigrateITH2Vendor extends SpringBootFlywayMigrateIT
 
     protected void dropTestTable() {
         try {
-            jdbcTemplate.update("DROP TABLE " + SpringBootFlywayMigrateITAbs.TABLE_NAME);
+            jdbcTemplate.update("DROP TABLE " + SpringBootFlywayMigrateITAbsMaven.TABLE_NAME);
         } catch (Exception e) {}
     }
 
