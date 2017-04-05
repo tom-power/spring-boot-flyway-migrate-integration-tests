@@ -5,9 +5,9 @@
     <artifactId>spring-boot-flyway-migrate-integration-tests</artifactId>
     <name>Spring Boot Flyway Migrate Integration Tests</name>
     <properties>
-        <project.version>0.2.2</project.version>
+        <project.version>0.3</project.version>
     </properties>
-    <version>0.2.2</version>
+    <version>0.3</version>
     <packaging>pom</packaging>
 
     <parent>

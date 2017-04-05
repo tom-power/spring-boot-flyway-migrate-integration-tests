@@ -1,6 +1,10 @@
 package com.github.tompower.spring.boot.flyway.migrate.test;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +23,7 @@ public abstract class SpringBootFlywayMigrateITAbs {
 
     protected static String TABLE_NAME;
     protected static String DB_MIGRATION_BASE = "db/migration";
+
     protected abstract String getTarget();
 
     protected static final int ERROR_STATUS = 1;
@@ -32,31 +37,50 @@ public abstract class SpringBootFlywayMigrateITAbs {
     protected final File MIGRATION_FILE = new File(SRC_MAIN_RESOURCES + DB_MIGRATION);
     protected final File TARGET_MIGRATION_FILE = new File(getTarget() + DB_MIGRATION);
 
-    protected void deleteMigrationFile() {
-        if (migrationFileExists())
-            MIGRATION_FILE.delete();
-        if (TARGET_MIGRATION_FILE.exists())
-            TARGET_MIGRATION_FILE.delete();
-    }
-
+    @Test
     public void generateTest() {
         assertFalse(migrationFileExists());
         assertFalse(fails(run("generate")));
         assertTrue(migrationFileExists());
     }
 
-    protected boolean migrationFileExists() {
+    public boolean migrationFileExists() {
         return MIGRATION_FILE.exists();
     }
 
+    @Test
     public void migrateTest() throws IOException {
-        assertFalse(fails(run("generate")));
-        FileUtils.copyFile(MIGRATION_FILE, TARGET_MIGRATION_FILE);
         assertFalse(tableExists());
+        generateUpdate();
         assertFalse(fails(run("migrate")));
         assertTrue(tableExists());
     }
 
+    @Test
+    public void cleanTest() throws IOException {
+        assertFalse(tableExists());
+        generateMigrate();
+        Assert.assertTrue(tableExists());
+        assertFalse(fails(run("clean")));
+        assertFalse(tableExists());
+    }
+
+    protected void generateMigrate() throws IOException {
+        generateUpdate();
+        assertFalse(fails(run("migrate")));
+    }
+
+    protected void generateUpdate() throws IOException {
+        assertFalse(fails(run("generate")));
+        FileUtils.copyFile(MIGRATION_FILE, TARGET_MIGRATION_FILE);
+    }
+
+    @Test
+    public void infoTest() {
+        assertFalse(fails(run("info")));
+    }
+
+    @Test
     public void validateTest() throws IOException {
         assertFalse(fails(run("validate")));
         migrateTest();
@@ -65,7 +89,17 @@ public abstract class SpringBootFlywayMigrateITAbs {
         assertTrue(fails(run("validate")));
     }
 
-    public boolean fails(int result) {
+    @Test
+    public void baselineTest() {
+        assertFalse(fails(run("baseline")));
+    }
+
+    @Test
+    public void repairTest() {
+        assertFalse(fails(run("repair")));
+    }
+
+    protected boolean fails(int result) {
         return 0 != result;
     }
 
@@ -82,11 +116,10 @@ public abstract class SpringBootFlywayMigrateITAbs {
         return false;
     }
 
-
     @Autowired
     Environment env;
 
-    public String getProfile() {
+    protected String getProfile() {
         String[] activeProfiles = env.getActiveProfiles();
         if (activeProfiles.length > 0)
             return "-Dprofile=" + activeProfiles[0];
@@ -99,19 +132,28 @@ public abstract class SpringBootFlywayMigrateITAbs {
 
     protected abstract void dropTestTable();
 
-    protected void setup() {
+    @Before
+    public void setup() {
         deleteMigrationFile();
         dropTestTable();
         dropSchemaVersionTable();
     }
 
-    protected void teardown() {
+    @After
+    public void teardown() {
         deleteMigrationFile();
         dropTestTable();
         dropSchemaVersionTable();
     }
 
-    public int runCommand(String command) {
+    protected void deleteMigrationFile() {
+        if (migrationFileExists())
+            MIGRATION_FILE.delete();
+        if (TARGET_MIGRATION_FILE.exists())
+            TARGET_MIGRATION_FILE.delete();
+    }
+
+    protected int runCommand(String command) {
 
         try {
 

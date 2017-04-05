@@ -1,10 +1,6 @@
 package com.github.tompower.spring.boot.flyway.migrate.test;
 
-import java.io.IOException;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -21,31 +17,6 @@ public class SpringBootFlywayMigrateITH2Vendor extends SpringBootFlywayMigrateIT
     public static void beforeClassSetup() {
         TABLE_NAME = "PERSON";
         DB_MIGRATION_BASE = "db/migration/h2";
-    }
-
-    @Before
-    public void setup() {
-        super.setup();
-    }
-
-    @After
-    public void teardown() {
-        super.teardown();
-    }
-
-    @Test
-    public void generateTest() {
-        super.generateTest();
-    }
-
-    @Test
-    public void migrateTest() throws IOException {
-        super.migrateTest();
-    }
-
-    @Test
-    public void validateTest() throws IOException {
-        super.validateTest();
     }
 
     protected void dropSchemaVersionTable() {

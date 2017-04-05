@@ -7,13 +7,10 @@ public abstract class SpringBootFlywayMigrateITAbsMaven extends SpringBootFlyway
     }
 
     protected int run(String goal) {
-
         String command = "mvn " +
                 "-f " + ROOT_DIR + "/pom.xml " +
                 MAVEN_PLUGIN + ":" + goal + " -X " + getProfile();
-
         return super.runCommand(command);
-
     }
 
 }

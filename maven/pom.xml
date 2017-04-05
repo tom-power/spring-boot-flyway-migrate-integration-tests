@@ -15,14 +15,14 @@
     <parent>
         <groupId>com.github.tom-power.spring-boot-flyway-migrate-integration-tests</groupId>
         <artifactId>spring-boot-flyway-migrate-integration-tests</artifactId>
-        <version>0.2.2</version>
+        <version>0.3</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>com.github.tom-power.spring-boot-flyway-migrate-integration-tests</groupId>
             <artifactId>core</artifactId>
-            <version>0.2.2</version>
+            <version>0.3</version>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
@@ -42,7 +42,7 @@
             <plugin>
                 <groupId>com.github.tom-power.spring-boot-flyway-migrate</groupId>
                 <artifactId>maven-plugin</artifactId>
-                <version>0.2.2</version>
+                <version>0.3</version>
             </plugin>
         </plugins>
     </build>
